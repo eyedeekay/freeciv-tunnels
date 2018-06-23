@@ -1,0 +1,10 @@
+FROM debian:sid
+RUN apt-get update
+RUN apt-get install -y freeciv-client-gtk3
+RUN adduser --disabled-password --gecos ',,,,' freeciv
+USER freeciv
+CMD /usr/games/freeciv-gtk3 --help
+CMD /usr/games/freeciv-gtk3 \
+    --autoconnect \
+    --server 172.81.81.2 \
+    --port 5555

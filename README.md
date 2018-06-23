@@ -1,2 +1,9 @@
-# freeciv-tunnels
-Turnkey freeciv server powered by docker
+Freeciv over i2p: The Server
+============================
+
+
+
+Freeciv over i2p: The Client
+============================
+
+
