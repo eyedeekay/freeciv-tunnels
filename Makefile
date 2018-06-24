@@ -23,6 +23,7 @@ i2pd: build-i2pd run-i2pd
 
 build-freeciv:
 	docker build --rm \
+		--build-arg "file"="civ2civ3.serv" \
 		-f Dockerfile -t eyedeekay/i2p-freeciv .
 
 build-client:

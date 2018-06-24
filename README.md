@@ -56,11 +56,55 @@ it.
 
 ### Setting up Freeciv
 
-#### Install the Freeciv Server in a container
+In order to make Freeciv run across i2p, it helps to make a few adjustments to
+Freeciv.
 
 #### Adjust the timeouts for connecting to the Freeciv Server
 
+Now that you've got your server tunnel, it's time to configure the Freeciv
+server. Freeciv server on Debian uses the folder /usr/share/games/freeciv/
+to store it's scenario configurations. I happen to like playing the Civ2/Civ3
+scenario: /usr/share/games/freeciv/civ2civ3.serv. Copy that file to the
+directory where you're configuring your Freeciv server container. In order to
+make it work reliably with i2p, turn up the timeout options a bit by copying
+the following lines to the bottom:
+
+```
+set nettimeout=120
+set netwait=20
+set pingtime=60
+set pingtimeout=600
+```
+
+Of course, you can add these lines to any freeciv scenario. I'd just make sure
+to add them at the end, to ensure that they are applied last.
+
+#### Install the Freeciv Server in a container
+
+A common mistake in Docker containers is to run applications as root in the
+container unnecessarily. In our Dockerfile, we create a user 'freeciv' to run
+our freeciv service.
+
 #### The Dockerfile
+
+```Dockerfile
+FROM debian:sid
+ARG file=civ2civ3.serv
+ENV file=$file
+RUN apt-get update
+RUN apt-get install -y freeciv-server
+RUN adduser --disabled-password --gecos ',,,,' freeciv
+WORKDIR /usr/share/games/freeciv/
+COPY $file /usr/share/games/freeciv/$file
+WORKDIR /home/freeciv
+USER freeciv
+CMD /usr/games/freeciv-server \
+    --bind 0.0.0.0 \
+    --port 5555 \
+    --identity "i2p-freeciv" \
+    -r /usr/share/games/freeciv/$file \
+    --exit-on-end
+```
 
 Freeciv over i2p: The Client
 ----------------------------

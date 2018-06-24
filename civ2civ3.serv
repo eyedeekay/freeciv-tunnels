@@ -1,0 +1,9 @@
+# Server commands to make Civ2Civ3 Freeciv rules
+#
+
+rulesetdir civ2civ3
+
+set nettimeout=120
+set netwait=20
+set pingtime=60
+set pingtimeout=600
